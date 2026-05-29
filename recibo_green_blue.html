@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recibo Green & Blue Aquamarine</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    background: #d0d0d0;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 20px;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+
+  .action-buttons button {
+    padding: 7px 22px;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    font-size: 13px;
+    font-weight: bold;
+    border: 2px solid #2255a0;
+    border-radius: 3px;
+    cursor: pointer;
+    background: #fff;
+    color: #2255a0;
+    letter-spacing: 0.5px;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .action-buttons button:hover {
+    background: #2255a0;
+    color: #fff;
+  }
+
+  .receipt-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+  .receipt-container {
+    background: #c8e8f0;
+    width: 210mm;
+    min-height: 138mm;
+    border: 1.5px solid #3a7ab8;
+    padding: 0;
+    position: relative;
+    box-shadow: 2px 3px 8px rgba(0,0,0,0.18);
+  }
+
+  /* ---- HEADER ---- */
+  .receipt-header {
+    display: grid;
+    grid-template-columns: 58mm 1fr 38mm;
+    border-bottom: 1.5px solid #3a7ab8;
+    min-height: 22mm;
+  }
+
+  /* Logo col */
+  .header-logo {
+    padding: 5px 6px 4px 8px;
+    border-right: 1.5px solid #3a7ab8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .logo-main {
+    display: flex;
+    align-items: baseline;
+    gap: 0px;
+    line-height: 1;
+  }
+
+  .logo-green {
+    color: #2e8b2e;
+    font-size: 18px;
+    font-weight: 900;
+    font-family: Arial Black, Arial, sans-serif;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+
+  .logo-ampersand {
+    color: #2e8b2e;
+    font-size: 14px;
+    font-weight: 900;
+    font-family: Arial Black, Arial, sans-serif;
+    margin: 0 1px;
+  }
+
+  .logo-leaf {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: #2e8b2e;
+    border-radius: 50% 0 50% 0;
+    margin: 0 1px 0 1px;
+    position: relative;
+    top: 1px;
+  }
+
+  .logo-blue {
+    color: #1a6ab5;
+    font-size: 18px;
+    font-weight: 900;
+    font-family: Arial Black, Arial, sans-serif;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+
+  .logo-aquamarine {
+    color: #2e8b2e;
+    font-size: 9.5px;
+    font-style: italic;
+    font-weight: 400;
+    font-family: 'Times New Roman', Georgia, serif;
+    letter-spacing: 2.5px;
+    margin-top: 1px;
+    margin-left: 1px;
+  }
+
+  .logo-tagline {
+    color: #2e8b2e;
+    font-size: 6.5px;
+    font-style: italic;
+    margin-top: 3px;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  /* Center col */
+  .header-center {
+    padding: 4px 6px 3px 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 1.5px solid #3a7ab8;
+  }
+
+  .services-row {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .service-item {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    font-size: 8px;
+    color: #1a6ab5;
+    font-weight: bold;
+    letter-spacing: 0.2px;
+    text-transform: uppercase;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .service-checkbox {
+    width: 9px;
+    height: 9px;
+    border: 1.5px solid #1a6ab5;
+    background: transparent;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .phone-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 8.5px;
+    color: #1a6ab5;
+    font-weight: bold;
+    margin-top: 3px;
+  }
+
+  .phone-icon {
+    font-size: 9px;
+  }
+
+  .dates-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-top: 4px;
+  }
+
+  .date-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .date-label {
+    font-size: 7px;
+    color: #1a6ab5;
+    font-weight: bold;
+    letter-spacing: 0.2px;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .date-boxes {
+    display: flex;
+    gap: 2px;
+  }
+
+  .date-box {
+    width: 16mm;
+    height: 7mm;
+    border: 1.5px solid #3a7ab8;
+    background: transparent;
+    font-size: 8px;
+    color: #1a6ab5;
+    text-align: center;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    padding: 0 2px;
+  }
+
+  .date-box:focus {
+    outline: none;
+    background: rgba(255,255,255,0.3);
+  }
+
+  .direccion-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 4px;
+    margin-top: 3px;
+  }
+
+  .direccion-label {
+    font-size: 7.5px;
+    color: #1a6ab5;
+    font-weight: bold;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .form-underline {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #3a7ab8;
+    background: transparent;
+    font-size: 8px;
+    color: #1a3a6b;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    padding: 0 2px 1px 2px;
+    outline: none;
+    min-width: 0;
+  }
+
+  /* Receipt number col */
+  .header-recibo {
+    padding: 5px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .recibo-label {
+    color: #1a6ab5;
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 1.5px solid #3a7ab8;
+    padding: 2px 10px;
+    width: 100%;
+    text-align: center;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .recibo-number-row {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .recibo-no {
+    font-size: 10px;
+    color: #1a6ab5;
+    font-weight: bold;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .recibo-number-input {
+    font-size: 14px;
+    font-weight: bold;
+    color: #c0392b;
+    border: none;
+    border-bottom: 1.5px solid #3a7ab8;
+    background: transparent;
+    width: 50px;
+    text-align: center;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    letter-spacing: 1px;
+    outline: none;
+  }
+
+  /* ---- ROW: Señor(es) + Dirección ---- */
+  .receipt-row-senor {
+    display: flex;
+    align-items: flex-end;
+    padding: 3px 8px 2px 8px;
+    gap: 6px;
+    border-bottom: 1px solid #3a7ab8;
+  }
+
+  .field-label {
+    font-size: 8px;
+    color: #2e8b2e;
+    font-weight: bold;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .field-input-line {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #3a7ab8;
+    background: transparent;
+    font-size: 8.5px;
+    color: #1a3a6b;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    padding: 0 2px 1px 2px;
+    outline: none;
+    min-width: 0;
+    height: 13px;
+  }
+
+  .receipt-row-data {
+    display: grid;
+    grid-template-columns: 1fr 28mm 22mm 22mm 22mm 22mm;
+    border-bottom: 1px solid #3a7ab8;
+    align-items: flex-end;
+    padding: 2px 8px 2px 8px;
+    gap: 4px;
+  }
+
+  .data-cell {
+    display: flex;
+    align-items: flex-end;
+    gap: 3px;
+  }
+
+  /* ---- ROW: Teléfono + DESCRIPCIÓN header ---- */
+  .receipt-row-tel-desc {
+    display: grid;
+    grid-template-columns: 58mm 1fr 38mm;
+    border-bottom: 1.5px solid #3a7ab8;
+  }
+
+  .tel-cell {
+    display: flex;
+    align-items: flex-end;
+    padding: 2px 6px 2px 8px;
+    gap: 4px;
+    border-right: 1.5px solid #3a7ab8;
+  }
+
+  .desc-header-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 6px;
+    border-right: 1.5px solid #3a7ab8;
+  }
+
+  .desc-header-text {
+    font-size: 11px;
+    font-weight: bold;
+    color: #1a6ab5;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .vr-total-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 4px;
+  }
+
+  .vr-total-text {
+    font-size: 8px;
+    font-weight: bold;
+    color: #1a6ab5;
+    text-align: center;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    line-height: 1.3;
+  }
+
+  /* ---- DESCRIPCIÓN BODY ---- */
+  .receipt-desc-body {
+    display: grid;
+    grid-template-columns: 1fr 38mm;
+    border-bottom: 1.5px solid #3a7ab8;
+    min-height: 38mm;
+  }
+
+  .desc-textarea-cell {
+    border-right: 1.5px solid #3a7ab8;
+    padding: 4px 6px;
+  }
+
+  .desc-textarea {
+    width: 100%;
+    height: 100%;
+    min-height: 35mm;
+    border: none;
+    background: transparent;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    color: #1a3a6b;
+    resize: none;
+    outline: none;
+    line-height: 1.8;
+  }
+
+  .vr-total-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vr-row {
+    flex: 1;
+    border-bottom: 1px solid #3a7ab8;
+    padding: 2px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .vr-row:last-child {
+    border-bottom: none;
+  }
+
+  .vr-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    color: #1a3a6b;
+    text-align: right;
+    outline: none;
+    padding: 0 2px;
+  }
+
+  /* ---- OBSERVACIONES ---- */
+  .receipt-observaciones {
+    display: grid;
+    grid-template-columns: 1fr 38mm;
+    border-bottom: 1.5px solid #3a7ab8;
+    min-height: 16mm;
+  }
+
+  .obs-cell {
+    border-right: 1.5px solid #3a7ab8;
+    padding: 2px 6px 3px 6px;
+  }
+
+  .obs-label {
+    font-size: 8px;
+    font-weight: bold;
+    color: #2e8b2e;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    display: block;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .obs-textarea {
+    width: 100%;
+    height: calc(100% - 14px);
+    min-height: 10mm;
+    border: none;
+    background: transparent;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    color: #1a3a6b;
+    resize: none;
+    outline: none;
+  }
+
+  /* TOTAL row */
+  .total-row-cell {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .total-label-row {
+    display: grid;
+    grid-template-columns: 1fr 14mm;
+    border-bottom: 1px solid #3a7ab8;
+    flex: 1;
+  }
+
+  .total-label-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 2px 5px;
+    border-right: 1px solid #3a7ab8;
+  }
+
+  .total-label-text {
+    font-size: 9px;
+    font-weight: bold;
+    color: #1a6ab5;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .total-dollar-cell {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 2px 4px;
+  }
+
+  .total-dollar-text {
+    font-size: 9px;
+    font-weight: bold;
+    color: #1a6ab5;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  .total-value-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    color: #1a3a6b;
+    text-align: right;
+    outline: none;
+    padding: 0 2px;
+    flex: 1;
+  }
+
+  /* ---- FIRMAS ---- */
+  .receipt-firmas {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 6px 10px 7px 10px;
+    gap: 20px;
+  }
+
+  .firma-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .firma-line {
+    width: 80%;
+    border: none;
+    border-bottom: 1px solid #1a6ab5;
+    background: transparent;
+    height: 14px;
+    outline: none;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+    font-size: 9px;
+    color: #1a3a6b;
+    text-align: center;
+  }
+
+  .firma-label {
+    font-size: 7.5px;
+    font-weight: bold;
+    color: #2e8b2e;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 2px;
+    font-family: Arial Narrow, Arial, Helvetica, sans-serif;
+  }
+
+  /* --- TOTAL CELL in observaciones grid --- */
+  .obs-total-cell {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+
+  .total-inner-grid {
+    display: grid;
+    grid-template-columns: 1fr 38mm;
+    border-top: 1px solid #3a7ab8;
+  }
+
+  .total-key {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 3px 6px;
+    border-right: 1.5px solid #3a7ab8;
+  }
+
+  .total-val {
+    display: flex;
+    align-items: center;
+    padding: 2px 4px;
+  }
+
+  /* Print overrides */
+  @media print {
+    body {
+      background: none;
+      padding: 0;
+      margin: 0;
+    }
+    .action-buttons {
+      display: none;
+    }
+    .receipt-container {
+      box-shadow: none;
+      margin: 0;
+      width: 210mm;
+    }
+    input, textarea {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+
+  /* Validation error */
+  input.error, textarea.error {
+    background: rgba(255, 100, 100, 0.12) !important;
+    border-bottom-color: #c0392b !important;
+  }
+</style>
+</head>
+<body>
+
+<div class="action-buttons">
+  <button onclick="printReceipt()">🖨 Imprimir</button>
+  <button onclick="clearReceipt()">🗑 Limpiar</button>
+</div>
+
+<div class="receipt-wrapper">
+<div class="receipt-container" id="receipt-container">
+
+  <!-- HEADER -->
+  <div class="receipt-header">
+
+    <!-- Logo -->
+    <div class="header-logo">
+      <div class="logo-main">
+        <span class="logo-green">GREEN</span>
+        <span style="display:inline-flex;align-items:center;margin:0 2px;">
+          <span style="display:inline-block;width:13px;height:13px;background:#2e8b2e;border-radius:50% 0 50% 0;position:relative;top:1px;margin-right:1px;"></span>
+        </span>
+        <span class="logo-blue">BLUE</span>
+      </div>
+      <div class="logo-aquamarine">aquamarine</div>
+      <div class="logo-tagline">Efecto y prevención en la funcionalidad física</div>
+    </div>
+
+    <!-- Center: services + phone + dates + direccion -->
+    <div class="header-center">
+      <div>
+        <div class="services-row">
+          <div class="service-item"><span class="service-checkbox"></span>REHABILITACIÓN</div>
+          <div class="service-item"><span class="service-checkbox"></span>ENTRETENIMIENTO</div>
+          <div class="service-item"><span class="service-checkbox"></span>MASAJES</div>
+          <div class="service-item"><span class="service-checkbox"></span>NATACIÓN</div>
+        </div>
+        <div class="phone-row">
+          <span class="phone-icon">📱</span>
+          <span style="font-size:8px;color:#1a6ab5;font-weight:bold;font-family:Arial Narrow,Arial,Helvetica,sans-serif;">318 868 8008 / 310 740 6038</span>
+        </div>
+      </div>
+      <div class="dates-row">
+        <div class="date-group">
+          <span class="date-label">Fecha<br>Inicio</span>
+          <div class="date-boxes">
+            <input class="date-box" type="text" maxlength="10" placeholder="dd/mm/aa" title="Fecha Inicio">
+          </div>
+        </div>
+        <div class="date-group">
+          <span class="date-label">Fecha<br>Finalización</span>
+          <div class="date-boxes">
+            <input class="date-box" type="text" maxlength="10" placeholder="dd/mm/aa" title="Fecha Finalización">
+          </div>
+        </div>
+      </div>
+      <div class="direccion-row">
+        <span class="direccion-label">Dirección:</span>
+        <input class="form-underline" type="text" placeholder="" title="Dirección">
+      </div>
+    </div>
+
+    <!-- Recibo No -->
+    <div class="header-recibo">
+      <div class="recibo-label">RECIBO</div>
+      <div class="recibo-number-row">
+        <span class="recibo-no">N°</span>
+        <input class="recibo-number-input" type="text" value="0457" maxlength="6" title="Número de recibo">
+      </div>
+    </div>
+
+  </div><!-- /receipt-header -->
+
+  <!-- Señor(es) row -->
+  <div class="receipt-row-senor">
+    <span class="field-label">Señor (es):</span>
+    <input class="field-input-line" type="text" placeholder="" title="Nombre del cliente" style="flex:2;">
+  </div>
+
+  <!-- Ciudad / Edad / Peso / Talla / PPL row -->
+  <div class="receipt-row-data">
+    <div class="data-cell">
+      <span class="field-label">Ciudad:</span>
+      <input class="field-input-line" type="text" placeholder="" title="Ciudad">
+    </div>
+    <div class="data-cell">
+      <span class="field-label">Edad:</span>
+      <input class="field-input-line" type="text" placeholder="" title="Edad" style="width:18mm;">
+    </div>
+    <div class="data-cell">
+      <span class="field-label">Peso:</span>
+      <input class="field-input-line" type="text" placeholder="" title="Peso" style="width:16mm;">
+    </div>
+    <div class="data-cell">
+      <span class="field-label">Talla:</span>
+      <input class="field-input-line" type="text" placeholder="" title="Talla" style="width:16mm;">
+    </div>
+    <div class="data-cell">
+      <span class="field-label">PPL:</span>
+      <input class="field-input-line" type="text" placeholder="" title="PPL" style="width:16mm;">
+    </div>
+    <div></div>
+  </div>
+
+  <!-- Teléfono + DESCRIPCIÓN header + VR. TOTAL -->
+  <div class="receipt-row-tel-desc">
+    <div class="tel-cell">
+      <span class="field-label">Teléfono:</span>
+      <input class="field-input-line" type="tel" placeholder="" title="Teléfono">
+    </div>
+    <div class="desc-header-cell">
+      <span class="desc-header-text">DESCRIPCIÓN</span>
+    </div>
+    <div class="vr-total-header">
+      <span class="vr-total-text">VR. TOTAL</span>
+    </div>
+  </div>
+
+  <!-- Descripción body -->
+  <div class="receipt-desc-body">
+    <div class="desc-textarea-cell">
+      <textarea class="desc-textarea" placeholder="" title="Descripción de servicios" rows="6"></textarea>
+    </div>
+    <div class="vr-total-col">
+      <div class="vr-row"><input class="vr-input" type="text" placeholder="" title="Valor 1"></div>
+      <div class="vr-row"><input class="vr-input" type="text" placeholder="" title="Valor 2"></div>
+      <div class="vr-row"><input class="vr-input" type="text" placeholder="" title="Valor 3"></div>
+      <div class="vr-row"><input class="vr-input" type="text" placeholder="" title="Valor 4"></div>
+      <div class="vr-row" style="border-bottom:none;"><input class="vr-input" type="text" placeholder="" title="Valor 5"></div>
+    </div>
+  </div>
+
+  <!-- Observaciones + Total -->
+  <div class="receipt-observaciones">
+    <div class="obs-cell">
+      <span class="obs-label">Observaciones</span>
+      <textarea class="obs-textarea" placeholder="" title="Observaciones"></textarea>
+    </div>
+    <div class="obs-total-cell">
+      <div style="display:flex;align-items:center;height:100%;padding:4px;">
+        <!-- empty space matching obs height -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TOTAL row (standalone) -->
+  <div style="display:grid;grid-template-columns:1fr 38mm;border-bottom:1.5px solid #3a7ab8;">
+    <div style="display:flex;align-items:center;justify-content:flex-end;padding:3px 8px;border-right:1.5px solid #3a7ab8;">
+      <span style="font-size:9px;font-weight:bold;color:#1a6ab5;letter-spacing:0.5px;text-transform:uppercase;font-family:Arial Narrow,Arial,Helvetica,sans-serif;">TOTAL</span>
+    </div>
+    <div style="display:flex;align-items:center;padding:2px 6px;gap:3px;">
+      <span style="font-size:10px;font-weight:bold;color:#1a6ab5;font-family:Arial Narrow,Arial,Helvetica,sans-serif;">$</span>
+      <input type="text" title="Total" style="flex:1;border:none;background:transparent;font-family:Arial Narrow,Arial,Helvetica,sans-serif;font-size:9px;color:#1a3a6b;text-align:right;outline:none;padding:0 2px;">
+    </div>
+  </div>
+
+  <!-- Firmas -->
+  <div class="receipt-firmas">
+    <div class="firma-cell">
+      <input class="firma-line" type="text" placeholder="" title="Firma del instructor">
+      <span class="firma-label">Firma del Instructor</span>
+    </div>
+    <div class="firma-cell">
+      <input class="firma-line" type="text" placeholder="" title="Firma del usuario">
+      <span class="firma-label">Firma del Usuario</span>
+    </div>
+  </div>
+
+</div><!-- /receipt-container -->
+</div><!-- /receipt-wrapper -->
+
+<script>
+  function printReceipt() {
+    const inputs = document.querySelectorAll('#receipt-container input[required], #receipt-container textarea[required]');
+    let valid = true;
+    inputs.forEach(function(el) {
+      el.classList.remove('error');
+      if (!el.value.trim()) {
+        el.classList.add('error');
+        valid = false;
+      }
+    });
+    window.print();
+  }
+
+  function clearReceipt() {
+    const fields = document.querySelectorAll('#receipt-container input:not([type="hidden"]), #receipt-container textarea');
+    fields.forEach(function(el) {
+      if (el.classList.contains('recibo-number-input')) {
+        el.value = '0457';
+      } else {
+        el.value = '';
+      }
+      el.classList.remove('error');
+    });
+  }
+</script>
+
+</body>
+</html>
